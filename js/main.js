@@ -1,66 +1,91 @@
 $(function () {
-  let navs = $('.nav-bar>a')
-  let dots = $('.dot-bar>i')
-  let wrappers = $('.wrapper')
+  let topnav = $('header nav a')
+  let sidenav = $('aside ol li')
+  let togs = $('.tog')
+  let footer = $('footer')
+  let navLen = topnav.length
   let index = 0
-  let flag = true
 
-  for (let i = 0; i < navs.length; i++) {
-    navs.eq(i).attr('data-index', i)
-    dots.eq(i).attr('data-index', i)
-    wrappers.eq(i).attr('data-index', i)
+  const contentTops = new Array(navLen)
+
+  contentTops[0] = 0
+  for (let i = 0; i < navLen; i++) {
+    topnav.eq(i).attr('data-index', i)
+    sidenav.eq(i).attr('data-index', i)
   }
 
+  // 锚点导航
   function indecChange() {
-    wrappers.eq(index).css('display', 'block').siblings('.wrapper').css('display', 'none')
-    navs.eq(index).addClass('current').siblings("a").removeClass('current')
-    dots.eq(index).addClass('current').siblings("i").removeClass('current')
-    wrappers.eq(index).children(".content").children("h4").addClass('visited')
+    togs.eq(index).css('display', 'block').siblings('.tog').css('display', 'none')
+    topnav.eq(index).addClass('current').siblings("a").removeClass('current')
+    sidenav.eq(index).addClass('current').siblings("li").removeClass('current')
+    togs.eq(index).children("h4").addClass('visited')
+    if (index === navLen - 1) {
+      footer.css('display', 'block')
+    } else {
+      footer.css('display', 'none')
+    }
     setTimeout(() => {
-      wrappers.eq(index).children(".content").children("h4").removeClass('unvisited')
+      togs.eq(index).children("h4").removeClass('unvisited')
     }, 500)
   }
 
-  navs.on('click', function () {
+  topnav.on('click', function (e) {
+    e.preventDefault();
     index = $(this).attr('data-index')
     indecChange()
   })
 
-  dots.on('click', function () {
+  sidenav.on('click', function (e) {
+    e.preventDefault();
     index = $(this).attr('data-index')
     indecChange()
   })
 
-  var wintop = 0
-  let scoHeight = 0
-  // $(window).on('scroll', () => {
-  //   let winHeight = $(window).height(); // 可视窗口的高度
-  //   let docHeight = $(document).height()
-  //   wintop = Math.floor($(window).scrollTop()); // 已滚动卷去的高度
-  //   scoHeight = Math.floor(docHeight - winHeight)
-  //   // console.log(wintop, scoHeight);
-
-  // })
-  $(document).on("mousewheel DOMMouseScroll", function (e) {
+  let flag = true // 切换阀，防止切换过快
+  let flag2 = false // 切换阀，防止误触切换
+  let timer = null
+  $(window).on("mousewheel DOMMouseScroll", function (e) {
     let delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) ||  // chrome & ie
       (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1));              // firefox
-    let winHeight = $(window).height(); // 可视窗口的高度
-    let docHeight = $(document).height()
-    wintop = Math.floor($(window).scrollTop()); // 已滚动卷去的高度
-    scoHeight = Math.floor(docHeight - winHeight)
-    // console.log(wintop, scoHeight);
-    if (flag) {
-      flag = false
-      if (delta > 0 && wintop === 0) {
-        index = --index < 0 ? 0 : index
-      } else if (delta < 0 && wintop === scoHeight) {
-        index = ++index > navs.length - 1 ? navs.length - 1 : index
-        if (index !== navs.length - 1) {
-          $(document).scrollTop(0)
+    // 如果没有滚动条
+    if (document.documentElement.clientHeight >= document.documentElement.offsetHeight) {
+      if (flag) {
+        flag = false
+        if (delta > 0) {
+          // alert('上滚')
+          index = --index < 0 ? 0 : index
+        } else if (delta < 0 && index !== navLen - 1) {
+          index = ++index > navLen - 1 ? navLen - 1 : index
         }
+        indecChange()
+        setTimeout(() => flag = true, 800)
       }
-      indecChange()
-      setTimeout(() => flag = true, 500)
+      // flag2 = false
+    } else {
+      if (flag) {
+        flag = false
+        let winHeight = $(window).height(); // 可视窗口的高度
+        let docHeight = $(document).height()
+        wintop = Math.ceil($(window).scrollTop()); // 已滚动卷去的高度
+        scoHeight = Math.ceil(docHeight - winHeight)
+        if (delta > 0 && wintop === 0) {
+          // if (flag2) {
+          index = --index < 0 ? 0 : index
+          //   flag2 = false
+          // }
+          // flag2 = true
+        } else if (delta < 0 && wintop === scoHeight && index !== navLen - 1) {
+          // if (flag2) {
+          index = ++index > navLen - 1 ? navLen - 1 : index
+          $('html').scrollTop(0)
+          //   flag2 = false
+          // }
+          // flag2 = true
+        }
+        indecChange()
+        setTimeout(() => flag = true, 800)
+      }
     }
   })
 })
