@@ -49,43 +49,46 @@ $(function () {
     let delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) ||  // chrome & ie
       (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1));              // firefox
     // 如果没有滚动条
-    if (document.documentElement.clientHeight >= document.documentElement.offsetHeight) {
-      if (flag) {
-        flag = false
-        if (delta > 0) {
-          // alert('上滚')
-          index = --index < 0 ? 0 : index
-        } else if (delta < 0 && index !== navLen - 1) {
-          index = ++index > navLen - 1 ? navLen - 1 : index
+    if ($('html,body').width() >= 1280) {
+      if (document.documentElement.clientHeight >= document.documentElement.offsetHeight) {
+        if (flag) {
+          flag = false
+          if (delta > 0) {
+            // alert('上滚')
+            index = --index < 0 ? 0 : index
+          } else if (delta < 0 && index !== navLen - 1) {
+            index = ++index > navLen - 1 ? navLen - 1 : index
+          }
+          indecChange()
+          setTimeout(() => flag = true, 800)
         }
-        indecChange()
-        setTimeout(() => flag = true, 800)
-      }
-      // flag2 = false
-    } else {
-      if (flag) {
-        flag = false
-        let winHeight = $(window).height(); // 可视窗口的高度
-        let docHeight = $(document).height()
-        wintop = Math.ceil($(window).scrollTop()); // 已滚动卷去的高度
-        scoHeight = Math.ceil(docHeight - winHeight)
-        if (delta > 0 && wintop === 0) {
-          // if (flag2) {
-          index = --index < 0 ? 0 : index
-          //   flag2 = false
-          // }
-          // flag2 = true
-        } else if (delta < 0 && wintop === scoHeight && index !== navLen - 1) {
-          // if (flag2) {
-          index = ++index > navLen - 1 ? navLen - 1 : index
-          $('html').scrollTop(0)
-          //   flag2 = false
-          // }
-          // flag2 = true
+        // flag2 = false
+      } else {
+        if (flag) {
+          flag = false
+          let winHeight = $(window).height(); // 可视窗口的高度
+          let docHeight = $(document).height()
+          wintop = Math.ceil($(window).scrollTop()); // 已滚动卷去的高度
+          scoHeight = Math.ceil(docHeight - winHeight)
+          if (delta > 0 && wintop === 0) {
+            // if (flag2) {
+            index = --index < 0 ? 0 : index
+            //   flag2 = false
+            // }
+            // flag2 = true
+          } else if (delta < 0 && wintop === scoHeight && index !== navLen - 1) {
+            // if (flag2) {
+            index = ++index > navLen - 1 ? navLen - 1 : index
+            $('html').scrollTop(0)
+            //   flag2 = false
+            // }
+            // flag2 = true
+          }
+          indecChange()
+          setTimeout(() => flag = true, 800)
         }
-        indecChange()
-        setTimeout(() => flag = true, 800)
       }
     }
+
   })
 })

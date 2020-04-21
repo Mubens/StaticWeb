@@ -5,14 +5,9 @@
 }
 body {
   font: 12px/1.5 Helvetica, Arial, sans-serif;
-  -ms-overflow-style: none;
-  /* IE 10+ */
-  scrollbar-width: none;
-  /* Firefox */
 }
 ::-webkit-scrollbar {
-  display: none;
-  /* Chrome Safari */
+  width: 0;
 }
 a {
   text-decoration: none;
@@ -39,6 +34,10 @@ header .inner .logo {
   font-weight: 700;
   line-height: 70px;
   color: #000;
+}
+header .inner .logo img {
+  height: 40px;
+  vertical-align: -10px;
 }
 header .inner nav {
   float: right;
@@ -277,20 +276,21 @@ aside ol .current::after {
   color: #ffffff;
 }
 #coope ol {
-  display: grid;
+  display: flex;
   width: 80%;
-  height: 400px;
   margin: 40px auto;
-  grid-template-columns: repeat(4, 25%);
-  grid-template-rows: repeat(2, 50%);
+  flex-wrap: wrap;
+}
+#coope ol li {
+  width: 25%;
 }
 #coope ol li img {
+  vertical-align: top;
   width: 100%;
 }
 #team ol {
   display: grid;
   width: 80%;
-  min-width: 1070px;
   max-width: 1318px;
   height: 400px;
   margin: 40px auto;
@@ -337,6 +337,9 @@ aside ol .current::after {
 #team ol li ul a:nth-child(3) {
   background: url(../images/github.png) no-repeat center;
   background-size: contain;
+}
+#dynamic {
+  height: 100vh !important;
 }
 #dynamic .items {
   display: grid;
@@ -420,4 +423,142 @@ footer .inner-wrapper .record {
 footer .inner-wrapper .record p {
   margin: 8px 0;
   text-align: center;
+}
+@media screen and (max-width: 1280px) {
+  aside {
+    display: none;
+  }
+  #team ol {
+    position: relative;
+    width: 70%;
+    height: 900px;
+    justify-items: center;
+    grid-template-columns: minmax(260px, 50%) minmax(260px, 50%);
+    grid-template-areas: 'a b' 'c d';
+    grid-gap: 40px;
+  }
+  #team ol li:nth-child(1) {
+    grid-area: a;
+  }
+  #team ol li:nth-child(2) {
+    grid-area: b;
+  }
+  #team ol li:nth-child(3) {
+    grid-area: c;
+  }
+  #team ol li:nth-child(4) {
+    grid-area: d;
+  }
+}
+@media screen and (max-width: 1080px) {
+  ::-webkit-scrollbar {
+    width: 10px;
+    /* background-color: rgb(177, 176, 176); */
+  }
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 0px rgba(240, 240, 240, 0.5);
+    background-color: #f1f1f1;
+  }
+  ::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 0px rgba(240, 240, 240, 0.5);
+    background-color: #a6aaa8;
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #7c7f7e;
+  }
+  .tog {
+    display: block !important;
+  }
+  footer {
+    display: block !important;
+  }
+  .wrapper {
+    padding-top: 0 !important;
+  }
+  .wrapper > ul {
+    min-width: 720px;
+    min-height: 800px;
+    grid-template-columns: repeat(2, 350px);
+    grid-template-rows: repeat(3, 250px);
+    grid-gap: 20px;
+    justify-items: center;
+  }
+  .wrapper > ul li {
+    width: 350px;
+  }
+  #coope ol {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 1024px) {
+  header .inner {
+    width: 100%;
+    text-align: center;
+  }
+  header .inner nav {
+    display: none;
+  }
+  #team ol {
+    width: 100%;
+    min-width: 636px;
+  }
+  #coope ol li {
+    width: 33.33%;
+  }
+}
+@media screen and (max-width: 742px) {
+  html,
+  body {
+    width: 100%;
+    overflow-x: hidden;
+  }
+  .wrapper {
+    padding-top: 60px !important;
+  }
+  .wrapper > ul {
+    width: 100%;
+    min-width: 320px;
+    height: 1500px !important;
+    grid-template-columns: 100%;
+    grid-template-rows: repeat(6, 250px);
+    grid-template-areas: 'a' 'b' 'c' 'd' 'e' 'f';
+    grid-gap: 0;
+    justify-items: center;
+    align-items: center;
+  }
+  .wrapper > ul li {
+    height: 220px;
+  }
+  .wrapper > p {
+    padding: 0 40px;
+  }
+  #about,
+  #server {
+    height: 1720px;
+  }
+  #coope ol li {
+    width: 50%;
+  }
+  #team ol {
+    width: 100%;
+    min-width: 320px;
+    height: 1440px;
+    grid-template-columns: 100%;
+    grid-template-rows: repeat(4, 360px);
+    grid-template-areas: 'a' 'b' 'c' 'd';
+    grid-row-gap: 20px;
+  }
+  #team ol li:hover {
+    transform: none;
+  }
+  #dynamic .items {
+    display: grid;
+    position: relative;
+    width: 100%;
+    min-width: 320px;
+    margin: 0 auto 50px;
+    height: 656px;
+    grid-template-rows: repeat(5, 20%);
+  }
 }
